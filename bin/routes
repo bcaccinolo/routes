@@ -33,18 +33,19 @@ end.parse!
 #p ARGV
 
 
-# is Dir .roads exist
-if Dir.glob(".roads").empty?
-  Dir.mkdir(".roads")
+# is Dir .routess exist
+if Dir.glob(".routes").empty?
+  Dir.mkdir(".routes")
 end
 
-if !File.same_contents("config/routes.rb", ".roads/routes.rb") || options.include?(:init)
+if !File.same_contents("config/routes.rb", ".routes/routes.rb") || options.include?(:init)
   puts "Updating routes cache"
-  system "cp config/routes.rb .roads/"
-  system "rake routes > .roads/routes.txt"
-end
+  if system "rake routes > .routes/routes.txt"
+  system "cp config/routes.rb .routes/"
+  end
+  end
 
-cmd = "cat .roads/routes.txt"
+cmd = "cat .routes/routes.txt"
 ARGV.each do|a|
   cmd << " | grep -i #{a}"
 end
