@@ -1,3 +1,4 @@
+require 'optparse'
 
 class File
   def File.same_contents(p1, p2)
@@ -19,14 +20,25 @@ class File
 end
 
 
+options = {}
+OptionParser.new do |opts|
+opts.banner = "Usage: routes [options]"
+
+opts.on("-i", "--init", "Initialize the routes cache") do |v|
+options[:init] = 1
+end
+end.parse!
+
+#p options
+#p ARGV
+
+
 # is Dir .roads exist
 if Dir.glob(".roads").empty?
   Dir.mkdir(".roads")
 end
 
-if File.same_contents("config/routes.rb", ".roads/routes.rb")
-  # puts "files identical"
-else
+if !File.same_contents("config/routes.rb", ".roads/routes.rb") || options.include?(:init)
   puts "Updating routes cache"
   system "cp config/routes.rb .roads/"
   system "rake routes > .roads/routes.txt"
@@ -38,3 +50,4 @@ ARGV.each do|a|
 end
 
 system cmd
+
