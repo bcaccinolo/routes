@@ -4,15 +4,13 @@
 
 In your Rails project, just launch: 
 
-routes
+  routes
 
 == How to search in my routes
 
 To find all the routes containing the words event and show:
 
-routes event show
-
-
+  routes event show
 
 == Contributing to routes
  
