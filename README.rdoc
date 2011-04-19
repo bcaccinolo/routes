@@ -1,6 +1,18 @@
-= routes
+= Routes: rake routes 10x faster with search feature
 
-Description goes here.
+== How to use it
+
+In your Rails project, just launch: 
+
+routes
+
+== How to search in my routes
+
+To find all the routes containing the words event and show:
+
+routes event show
+
+
 
 == Contributing to routes
  
