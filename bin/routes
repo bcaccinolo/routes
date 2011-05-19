@@ -29,11 +29,20 @@ opts.banner = "Usage: routes [options]"
 opts.on("-i", "--init", "Initialize the routes cache") do |v|
 options[:init] = 1
 end
+
+opts.on("-v", "--version", "Version") do |v|
+options[:version] = 1
+end
+
 end.parse!
 
 #p options
 #p ARGV
 
+if options.include? :version
+  puts "0.1.3"
+  exit
+end
 
 # is Dir .routess exist
 if Dir.glob(".routes").empty?
