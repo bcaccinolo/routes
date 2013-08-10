@@ -1,6 +1,7 @@
 #! /usr/bin/ruby
 
 require 'optparse'
+require 'routes'
 
 class File
   def File.same_contents(p1, p2)
@@ -21,7 +22,6 @@ class File
   end
 end
 
-
 options = {}
 OptionParser.new do |opts|
 opts.banner = "Usage: routes [options]"
@@ -39,10 +39,8 @@ end.parse!
 #p options
 #p ARGV
 
-require 'routes'
-require 'pry'; binding.pry;
 if options.include? :version
-  puts "0.1.3"
+  puts Routes::VERSION
   exit
 end
 
