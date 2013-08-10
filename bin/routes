@@ -50,8 +50,9 @@ if Dir.glob(".routes").empty?
 end
 
 if !File.same_contents("config/routes.rb", ".routes/routes.rb") || options.include?(:init)
+  cmd = ENV['ROUTES_CMD'] || "rake routes"
   puts "Updating routes cache"
-  if system "rake routes > .routes/routes.txt"
+  if system "#{cmd} > .routes/routes.txt"
   system "cp config/routes.rb .routes/"
   end
   end
