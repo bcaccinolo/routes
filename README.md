@@ -1,6 +1,8 @@
 # Routes
 
-TODO: Write a gem description
+## Todo
+
+- write the usage section about 'search', 'custom route command'
 
 ## Installation
 
@@ -17,8 +19,6 @@ Or install it yourself as:
     $ gem install routes
 
 ## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
