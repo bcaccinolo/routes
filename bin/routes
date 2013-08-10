@@ -39,6 +39,8 @@ end.parse!
 #p options
 #p ARGV
 
+require 'routes'
+require 'pry'; binding.pry;
 if options.include? :version
   puts "0.1.3"
   exit
