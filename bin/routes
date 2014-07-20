@@ -2,25 +2,28 @@
 
 require 'optparse'
 require 'routes'
+require 'digest'
 
-class File
-  def File.same_contents(p1, p2)
-    return false if File.exists?(p1) != File.exists?(p2)
-    return true if File.expand_path(p1) == File.expand_path(p2)
-    return false if File.ftype(p1) != File.ftype(p2) || File.size(p1) != File.size(p2)
-
-    open(p1) do |f1|
-      open(p2) do |f2|
-        blocksize = f1.lstat.blksize
-        same = true
-        while same && !f1.eof? && !f2.eof?
-          same = f1.read(blocksize) == f2.read(blocksize)
-        end
-        return same
-      end
-    end
-  end
+def file_contents(path)
+  @file_contents ||= {}
+  @file_contents[path] ||= open(path, 'r').read
+rescue Errno::ENOENT
+  nil
 end
+
+def routes_rb_md5
+  @routes_rb_md5 ||= Digest::MD5.hexdigest(file_contents("config/routes.rb"))
+end
+
+def checksum_md5_contents
+  @checksum_md5_contents ||= file_contents(".routes/checksum.md5")  
+end
+
+def checksum_md5_update
+  open('.routes/checksum.md5', 'w') { |f| f.write routes_rb_md5 }
+end
+
+
 
 options = {}
 OptionParser.new do |opts|
@@ -49,13 +52,13 @@ if Dir.glob(".routes").empty?
   Dir.mkdir(".routes")
 end
 
-if !File.same_contents("config/routes.rb", ".routes/routes.rb") || options.include?(:init)
+if options.include?(:init) || routes_rb_md5 != checksum_md5_contents
   cmd = ENV['ROUTES_CMD'] || "rake routes"
   puts "Updating routes cache"
   if system "#{cmd} > .routes/routes.txt"
-  system "cp config/routes.rb .routes/"
+    checksum_md5_update
   end
-  end
+end
 
 cmd = "cat .routes/routes.txt"
 ARGV.each do|a|
